@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from fuel.datasets.binarized_mnist import BinarizedMNIST
-from .data_utils import get_datasets, fuel_datasets_into_lists, fuel_data_to_list
+from .data_utils import get_datasets, fuel_datasets_into_lists
 
 fileinfo = [
     "binarized_mnist.hdf5",

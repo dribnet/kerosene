@@ -21,13 +21,13 @@ from keras.layers import containers
     http://www.cs.toronto.edu/~larocheh/public/datasets/
         binarized_mnist/binarized_mnist_{train,valid,test}.amat
 
-    FWIW: I have several issues with this dataset, including mainly:
+    Note that this dataset is not quite what you might expect:
 
-        * why was random noise added during dithering?
-        * where are the labels?
-        * a validation set without the same writer constraints?
+        * randomized dithering limits compression roughly 50%
+        * no labels
+        * validation could have "writer" information leakage
 
-    However, at this point I believe this is in standard use so I'm
+    But at this point this dataset is in standard use so I'm
     making it available for comparison to published results.
 
     Since I don't have labels, I'm just running it through the
