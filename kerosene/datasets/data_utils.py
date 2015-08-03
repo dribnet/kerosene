@@ -29,7 +29,7 @@ def get_datasets(fetch_function, local_file, url):
 def fuel_data_to_list(fuel_data):
     fuel_data_stream = DataStream.default_stream(fuel_data,
         iteration_scheme=SequentialScheme(fuel_data.num_examples, fuel_data.num_examples))
-    return list(fuel_data_stream.get_epoch_iterator())[0]
+    return fuel_data_stream.get_epoch_iterator().next()
 
 def fuel_datasets_into_lists(fuel_datasets):
     return map(fuel_data_to_list, fuel_datasets)
