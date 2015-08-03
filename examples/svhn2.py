@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
+import os
+import itertools
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 
@@ -17,14 +19,30 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 
     This version can get to 92.86% test accuracy after 12 epochs.
     39 seconds per epoch on a GeForce GTX 680 GPU.
+
+    Or you can try:
+      USE_EXTRA=1 python svhn2.py
+
+    to also train on the much larger set that includes "extra" data.
+
+    With this extra data, this gets to 96.60% test accuracy after 12 epochs.
+    299 seconds per epoch on a GeForce GTX 680 GPU.    
 '''
 
 batch_size = 128
 nb_classes = 11
 nb_epoch = 12
 
-# the data, shuffled and split between tran and test sets
-(X_train, y_train), (X_test, y_test) = svhn2.load_data()
+if "USE_EXTRA" not in os.environ:
+    # standard split is 73,257 train / 26,032 test
+    (X_train, y_train), (X_test, y_test) = svhn2.load_data()
+else:
+    # svhn2 extra split has an additional 531,131 (!) examples
+    (X_train, y_train), (X_extra, y_extra), (X_test, y_test) = svhn2.load_data(sets=['train', 'extra', 'test'])
+    X_train = np.concatenate([X_train, X_extra])
+    y_train = np.concatenate([y_train, y_extra])
+
+# you can also instead train on the 531,131 "extra" set
 
 print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
