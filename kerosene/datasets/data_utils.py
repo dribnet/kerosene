@@ -4,7 +4,7 @@ import os
 import fuel
 from fuel.datasets import MNIST
 from fuel.streams import DataStream
-from fuel.schemes import SequentialScheme
+from fuel.schemes import SequentialScheme, ShuffledScheme
 
 from keras.datasets import data_utils
 
@@ -26,10 +26,13 @@ def get_datasets(fetch_function, local_file, url):
 
     return datasets
 
-def fuel_data_to_list(fuel_data):
-    fuel_data_stream = DataStream.default_stream(fuel_data,
-        iteration_scheme=SequentialScheme(fuel_data.num_examples, fuel_data.num_examples))
+def fuel_data_to_list(fuel_data, shuffle):
+    if(shuffle):
+        scheme = ShuffledScheme(fuel_data.num_examples, fuel_data.num_examples)
+    else:
+        scheme = SequentialScheme(fuel_data.num_examples, fuel_data.num_examples)
+    fuel_data_stream = DataStream.default_stream(fuel_data, iteration_scheme=scheme)
     return fuel_data_stream.get_epoch_iterator().next()
 
-def fuel_datasets_into_lists(fuel_datasets):
-    return map(fuel_data_to_list, fuel_datasets)
+def fuel_datasets_into_lists(fuel_datasets, shuffle=False):
+    return map(lambda x: fuel_data_to_list(x, shuffle=shuffle), fuel_datasets)
