@@ -25,8 +25,9 @@ nb_epoch = 12
 # the data, shuffled and split between tran and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
-print(X_train.shape[0], 'train samples')
-print(X_test.shape[0], 'test samples')
+# print shape of data while model is building
+print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
+print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] == 1 else "s", *X_test.shape))
 
 # convert class vectors to binary class matrices
 Y_train = np_utils.to_categorical(y_train, nb_classes)

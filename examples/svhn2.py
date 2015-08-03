@@ -42,10 +42,9 @@ else:
     X_train = np.concatenate([X_train, X_extra])
     y_train = np.concatenate([y_train, y_extra])
 
-# you can also instead train on the 531,131 "extra" set
-
-print(X_train.shape[0], 'train samples')
-print(X_test.shape[0], 'test samples')
+# print shape of data while model is building
+print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
+print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] == 1 else "s", *X_test.shape))
 
 # convert class vectors to binary class matrices
 Y_train = np_utils.to_categorical(y_train, nb_classes)

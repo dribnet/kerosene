@@ -1,0 +1,76 @@
+from __future__ import absolute_import
+from __future__ import print_function
+import numpy as np
+np.random.seed(1337)  # for reproducibility
+
+from kerosene.datasets import binarized_mnist
+from keras.models import Sequential
+from keras.layers.core import Dense, AutoEncoder
+from keras.layers.convolutional import Convolution2D, MaxPooling2D
+from keras.utils import np_utils
+from keras.layers import containers
+
+'''
+    Iain Murray's conversion of mnist to binary format. The
+    provenance is from Hugo Larochelle's website.
+
+    Ruslan Salakhutdinov and Iain Murray, *On the Quantitative
+        Analysis of Deep Belief Networks*, Proceedings of the 25th
+        international conference on Machine learning, 2008, pp. 872-879.
+
+    http://www.cs.toronto.edu/~larocheh/public/datasets/
+        binarized_mnist/binarized_mnist_{train,valid,test}.amat
+
+    FWIW: I have several issues with this dataset, including mainly:
+
+        * why was random noise added during dithering?
+        * where are the labels?
+        * a validation set without the same writer constraints?
+
+    However, at this point I believe this is in standard use so I'm
+    making it available for comparison to published results.
+
+    Since I don't have labels, I'm just running it through the
+    autoencoder with reconstruction; not sure how to intpret the
+    score, but it doesn't seem to converge. Well at least it runs
+    fast. :-)
+    
+    This version stars at 0.2415 loss and remains there for 12 epochs.
+    1 second per epoch on a GeForce GTX 680 GPU.
+'''
+
+batch_size = 128
+nb_epoch = 12
+
+# the data, shuffled and split between tran and test sets
+(X_train,), (X_test,) = binarized_mnist.load_data()
+
+# print shape of data while model is building
+train_shape = X_train.shape
+test_shape = X_test.shape
+print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if train_shape[1] == 1 else "s", *test_shape))
+print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if test_shape[1] == 1 else "s", *train_shape))
+
+# flatten
+num_train_samples = train_shape[0]
+num_test_samples = test_shape[0]
+input_dim = train_shape[1] * train_shape[2] * train_shape[3]
+X_train = X_train.reshape(num_train_samples, input_dim)
+X_test = X_test.reshape(num_test_samples, input_dim)
+# parameters for autoencoder
+hidden_dim = int(input_dim / 2)
+final_dim = int(hidden_dim / 2)
+activation = 'linear'
+
+# build model
+model = Sequential()
+encoder = containers.Sequential([Dense(input_dim, hidden_dim, activation=activation), Dense(hidden_dim, final_dim, activation=activation)])
+decoder = containers.Sequential([Dense(final_dim, hidden_dim, activation=activation), Dense(hidden_dim, input_dim, activation=activation)])
+model.add(AutoEncoder(encoder=encoder, decoder=decoder, output_reconstruction=True))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(X_train, X_train, batch_size=batch_size, nb_epoch=nb_epoch, show_accuracy=True, verbose=1, validation_data=(X_test, X_test))
+
+# not sure if this is a valid way to evaluate the autoencoder...
+score = model.evaluate(X_test, X_test, show_accuracy=True, verbose=0)
+print('Test score:', score[0])
+print('Test accuracy:', score[1])
