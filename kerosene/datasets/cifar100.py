@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-from fuel.datasets.cifar100 import CIFAR100
-from .data_utils import get_datasets, fuel_datasets_into_lists
+import fuel.datasets
+from .dataset import Dataset
 
-fileinfo = [
-    "cifar100.hdf5",
-    "https://archive.org/download/kerosene_mnist/cifar100.hdf5"
-]
+class CIFAR100(Dataset):
+    basename = "cifar100"
+    default_sources=['features', 'coarse_labels']
+    class_for_filename_patch = fuel.datasets.CIFAR100
 
-def load_data(sets=['train', 'test'], sources=['features', 'coarse_labels']):
-    def load_data_callback():
-        return map(lambda s: CIFAR100(which_sets=[s], sources=sources), sets)
+    def build_data(self, sets, sources):
+        return map(lambda s: fuel.datasets.CIFAR100(which_sets=[s], sources=sources), sets)
 
-    fuel_datasets = get_datasets(load_data_callback, *fileinfo)
-    return fuel_datasets_into_lists(fuel_datasets)
-    
+def load_data(sets=None, sources=None, fuel_dir=False):
+    return CIFAR100().load_data(sets, sources, fuel_dir);

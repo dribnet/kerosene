@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from fuel.datasets import Iris
-from .data_utils import get_datasets, fuel_datasets_into_lists
+import fuel.datasets
+from .dataset import Dataset
 
-fileinfo = [
-    "iris.hdf5",
-    "https://archive.org/download/kerosene_mnist/iris.hdf5"
-]
+class Iris(Dataset):
+    basename = "iris"
+    default_sets=['all']
+    class_for_filename_patch = fuel.datasets.Iris
 
-def load_data(sets=['all'], sources=['features', 'targets']):
-    def load_data_callback():
-        return map(lambda s: Iris(which_sets=[s], sources=sources), sets)
+    def build_data(self, sets, sources):
+        return map(lambda s: fuel.datasets.Iris(which_sets=[s], sources=sources), sets)
 
-    fuel_datasets = get_datasets(load_data_callback, *fileinfo)
-    return fuel_datasets_into_lists(fuel_datasets, shuffle=True)
+def load_data(sets=None, sources=None, fuel_dir=False):
+    return Iris().load_data(sets, sources, fuel_dir);

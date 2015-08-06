@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-from fuel.datasets import MNIST
-from .data_utils import get_datasets, fuel_datasets_into_lists
+import fuel.datasets
+from .dataset import Dataset
 
-fileinfo = [
-    "mnist.hdf5",
-    "https://archive.org/download/kerosene_mnist/mnist.hdf5"
-]
+class MNIST(Dataset):
+    basename = "mnist"
+    class_for_filename_patch = fuel.datasets.MNIST
 
-def load_data(sets=['train', 'test'], sources=['features', 'targets']):
-    def load_data_callback():
-        return map(lambda s: MNIST(which_sets=[s], sources=sources), sets)
+    def build_data(self, sets, sources):
+        return map(lambda s: fuel.datasets.MNIST(which_sets=[s], sources=sources), sets)
 
-    fuel_datasets = get_datasets(load_data_callback, *fileinfo)
-    return fuel_datasets_into_lists(fuel_datasets)
+def load_data(sets=None, sources=None, fuel_dir=False):
+    return MNIST().load_data(sets, sources, fuel_dir);

@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-from fuel.datasets.svhn import SVHN
-from .data_utils import get_datasets, fuel_datasets_into_lists
+import fuel.datasets
+from .dataset import Dataset
 
-fileinfo = [
-    "svhn_format_2.hdf5",
-    "https://archive.org/download/kerosene_mnist/svhn_format_2.hdf5"
-]
+class SVHN2(Dataset):
+    basename = "svhn_format_2"
+    class_for_filename_patch = fuel.datasets.SVHN
 
-def load_data(sets=['train', 'test'], sources=['features', 'targets']):
-    def load_data_callback():
-        return map(lambda s: SVHN(which_format=2, which_sets=[s], sources=sources), sets)
+    def build_data(self, sets, sources):
+        return map(lambda s: fuel.datasets.SVHN(which_format=2, which_sets=[s], sources=sources), sets)
 
-    fuel_datasets = get_datasets(load_data_callback, *fileinfo)
-    return fuel_datasets_into_lists(fuel_datasets)
-    
+def load_data(sets=None, sources=None, fuel_dir=False):
+    return SVHN2().load_data(sets, sources, fuel_dir);

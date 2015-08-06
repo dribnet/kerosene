@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from fuel.datasets.binarized_mnist import BinarizedMNIST
-from .data_utils import get_datasets, fuel_datasets_into_lists
+import fuel.datasets
+from .dataset import Dataset
 
-fileinfo = [
-    "binarized_mnist.hdf5",
-    "https://archive.org/download/kerosene_mnist/binarized_mnist.hdf5"
-]
+class BinarizedMNIST(Dataset):
+    basename = "binarized_mnist"
+    default_sources=['features']
+    class_for_filename_patch = fuel.datasets.BinarizedMNIST
 
-def load_data(sets=['train', 'test'], sources=['features']):
-    def load_data_callback():
-        return map(lambda s: BinarizedMNIST(which_sets=[s], sources=sources), sets)
+    def build_data(self, sets, sources):
+        return map(lambda s: fuel.datasets.BinarizedMNIST(which_sets=[s], sources=sources), sets)
 
-    fuel_datasets = get_datasets(load_data_callback, *fileinfo)
-    return fuel_datasets_into_lists(fuel_datasets)
+def load_data(sets=None, sources=None, fuel_dir=False):
+    return BinarizedMNIST().load_data(sets, sources, fuel_dir);
