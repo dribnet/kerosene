@@ -48,8 +48,8 @@ nb_epoch = 12
 # print shape of data while model is building
 train_shape = X_train.shape
 test_shape = X_test.shape
-print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if train_shape[1] == 1 else "s", *test_shape))
-print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if test_shape[1] == 1 else "s", *train_shape))
+print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if train_shape[1] == 1 else "s", *train_shape))
+print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if test_shape[1] == 1 else "s", *test_shape))
 
 # flatten
 num_train_samples = train_shape[0]
