@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import importlib
+import sys
+import os
+from distutils import spawn
+from fuel import downloaders
+
+if __name__ == "__main__":
+    python_file = sys.argv[1]
+    basename_ext = os.path.basename(python_file)
+    basename = os.path.splitext(basename_ext)[0]
+    execfile(python_file)
+    downloaders.all_downloaders += ((basename, download_subparser),)
+    sys.argv[1] = basename
+    print "Loaded module {}".format(basename)
+
+fuel_download = spawn.find_executable("fuel-download")
+if(fuel_download):
+    execfile(fuel_download)
+
+exit(0)

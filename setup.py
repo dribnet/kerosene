@@ -10,4 +10,5 @@ setup(name='Kerosene',
       download_url='https://github.com/dribnet/kerosene/tarball/0.1.0',
       license='MIT',
       install_requires=['keras', 'fuel'],
+      scripts=['bin/kero-convert', 'bin/kero-download'],
       packages=find_packages())
