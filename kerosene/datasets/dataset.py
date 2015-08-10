@@ -50,7 +50,7 @@ class Dataset(object):
     # these values are intended to be immutable per subclass
     basename = "your_dataset_name_here"
     version = "0.1.0"
-    url_dir = "https://archive.org/download/kerosene/"
+    url_dir = "https://archive.org/download/kerosene_201508/"
     default_sets = ['train', 'test']
     default_sources = ['features', 'targets']
 
@@ -62,6 +62,9 @@ class Dataset(object):
     def build_data(self, sets, sources):
         return None
 
+    def apply_transforms(self, datasets):
+        return datasets
+
     def load_data(self, sets=None, sources=None, fuel_dir=False):
         sets = self.default_sets if sets is None else sets
         sources = self.default_sources if sources is None else sources
@@ -72,8 +75,10 @@ class Dataset(object):
             if(self.class_for_filename_patch):
                 self.class_for_filename_patch.filename = property(lambda self: local_file)
         datasets = self.build_data(sets, sources)
-        return fuel_datasets_unpacked(datasets)
+        datasets = fuel_datasets_unpacked(datasets, shuffle=True)
+        datasets = self.apply_transforms(datasets)
+        return datasets
 
 # again, this is an template for subclasses
 def load_data(sets=None, sources=None, fuel_dir=False):
-    return BaseDataset().load_data(sets, sources, fuel_dir);
+    return Dataset().load_data(sets, sources, fuel_dir);
