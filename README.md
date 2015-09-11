@@ -90,7 +90,7 @@ The following commands install the dependencies. Sometimes sudo is necessary.
 
 ```bash
 pip install keras
-pip install git+git://github.com/mila-udem/fuel.git@0653e5b
+pip install git+git://github.com/mila-udem/fuel.git@64a43f9
 
 ```
 
@@ -124,8 +124,7 @@ dataset.
 Merge requests for any of these examples that are more accurate, run faster, and/or are written clearer are
 definitely welcome.
 
-There's also small wrapper scripts `kero-download` and `kero-convert`, which are used to run `fuel-download`
-and `fuel-convert` on datasets that are not part of the fuel distribution, making them kerosene and fuel compatible. These scripts are used to make brand new fuel-compatible datasets such as [lfw_fuel](https://github.com/dribnet/lfw_fuel) available to both blocks and keras developers.
+It is also possible to use `fuel-download` and `fuel-convert` on datasets that are not part of the fuel distribution, making them kerosene and fuel compatible. An example is [lfw_fuel](https://github.com/dribnet/lfw_fuel), which creates a fuel-compatible dataset which can be made available to both blocks and keras developers.
 
 
 ## Issues
