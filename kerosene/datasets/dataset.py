@@ -3,7 +3,7 @@ import os
 import fuel
 from fuel.streams import DataStream
 from fuel.schemes import SequentialScheme, ShuffledScheme
-from keras.datasets import data_utils
+from fuel.downloaders.base import default_downloader
 
 ########## UTILS 
 
@@ -20,18 +20,19 @@ def paths_from_metadata(basename, version, url_dir):
 # will include a download of the file if not already present
 # returns fuel path to local file
 def ensure_dataset_ready(basename, version, url_dir):
+    # setup names
     filename, url = paths_from_metadata(basename, version, url_dir)
-    # loading it from keras data subdirectory
-    kerosenedir = os.path.expanduser(os.path.join('~', '.keras', 'datasets', "kerosene"))
-    if not os.path.exists(kerosenedir):
-        os.makedirs(kerosenedir)
-    path = data_utils.get_file("kerosene/{}".format(filename), origin=url)
+    kerosenedir = os.path.expanduser(os.path.join('~', '.kerosene', 'datasets'))
+    filetarget = os.path.join(kerosenedir, filename)
+    # if file is not present, download it (also created directories if needed)
+    if not os.path.isfile(filetarget):
+        default_downloader(kerosenedir, [url], [filename])
     # override fuel's centralized location temporarily
     fuel.config.data_path = kerosenedir
     return filename
 
 def restore_fuel_data_path():
-    fuel.config.data_path = fuel.config.data_path
+    fuel.config.data_path = initial_fuel_config_path
 
 def fuel_data_to_list(fuel_data, shuffle):
     if(shuffle):
