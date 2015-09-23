@@ -1,10 +1,10 @@
 # Kerosene: Clean Burning Fuel
 
-Provides verisioned datasets to [keras](https://github.com/fchollet/keras) projects in hdf5 format with a dead-simple interface.
+Provides verisioned datasets to Machine Learning projects in hdf5 format with a dead-simple interface.
 
 ## Show me
 
-Without optional arguments, kerosene behaves nearly identically to keras.datasets: a minimal interface to provide features and labels in a test / train split.
+Without optional arguments, kerosene provides a minimal interface to get features and labels in a test / train split. Below are examples of using it with [keras](https://github.com/fchollet/keras).
 
 ```python
 # MNIST example
@@ -63,7 +63,7 @@ from kerosene.datasets import iris
 model.fit(X_all, Y_all, validation_split=0.25)
 ```
 
-Just like keras.datasets, downloads are automatic and cached on your local drive.
+Kerosene downloads are automatic and cached on your local drive.
 
 ## OK, what is this again?
 
@@ -78,20 +78,19 @@ Kerosene provides a collection of versioned, immutable, publicly available fuel-
 
 Kerosene includes wrappers for most of the datasets that are built into the fuel libraries.
 When used as a dependency, it similarly provides access to any third party fuel hdf5 file in a way
-intended to be useful to both the [keras](https://github.com/fchollet/keras) and [blocks](https://github.com/mila-udem/blocks) ecosystems. As an example, see
-the [lfw_fuel](https://github.com/dribnet/lfw_fuel) repo which provides keras and blocks
+intended to be useful to any ML library, such as [keras](https://github.com/fchollet/keras) and [blocks](https://github.com/mila-udem/blocks). As an example, see
+the [lfw_fuel](https://github.com/dribnet/lfw_fuel) repo which provides simple
 access to the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) dataset in several formats.
 
 ## Installation
 
-Kerosene depends on the official [keras](https://github.com/fchollet/keras/) release and development version of [fuel](https://github.com/mila-udem/fuel). Kerosene is not yet available via `pip`.
+Kerosene depends on the development version of [fuel](https://github.com/mila-udem/fuel). The packaged examples require the official [keras](https://github.com/fchollet/keras/) to run. Kerosene is not yet available via `pip`, but plans are to do so after the next offical release of fuel.
 
 The following commands install the dependencies. Sometimes sudo is necessary.
 
 ```bash
-pip install keras
 pip install git+git://github.com/mila-udem/fuel.git@64a43f9
-
+pip install keras
 ```
 
 After dependencies run the following:
@@ -129,8 +128,8 @@ It is also possible to use `fuel-download` and `fuel-convert` on datasets that a
 
 ## Issues
 
-This project is just getting started, so the API is subject to change, documentation is lacking, and options are not necessarily discoverable. I'm not happy with the hdf5 file sizes. The dev fuel dependency is awkard,
-but that cannot be easily fixed until the next fuel release. The overall software design is also rough, but it functions well as proof of concept that can be refined if kerosene becomes useful to the keras ecosystem.
+This project is just getting started, so the API is subject to change, documentation is lacking, and options are not necessarily discoverable. Kerosene does not yet support fuel's ability to iterate over a dataset without loading it into memory. I'm not happy with the hdf5 file sizes. The dev fuel dependency is awkard,
+but that cannot be easily fixed until the next fuel release. The overall software design is also rough, but it functions well as proof of concept that can be refined if kerosene becomes useful to others.
 
 ## License
 
