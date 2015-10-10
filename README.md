@@ -86,11 +86,10 @@ access to the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) data
 
 Kerosene depends on the development version of [fuel](https://github.com/mila-udem/fuel). The packaged examples require the official [keras](https://github.com/fchollet/keras/) to run. Kerosene is not yet available via `pip`, but plans are to do so after the next offical release of fuel.
 
-The following commands install the dependencies. Sometimes sudo is necessary.
+The following commands installs the fuel dependency. Sometimes sudo is necessary.
 
 ```bash
 pip install git+git://github.com/mila-udem/fuel.git@64a43f9
-pip install keras
 ```
 
 After dependencies run the following:
@@ -99,9 +98,10 @@ After dependencies run the following:
 python setup.py install
 ```
 
-Now you should be able to run any of the examples in the examples folder
+If you have keras, you should be able to run any of the examples in the examples folder.
 
 ```bash
+pip install keras
 python ./examples/mnist.py
 ```
 
@@ -113,11 +113,11 @@ dataset.
 
 | Dataset | # records | % Accuracy Score |
 |---------|-------------------|-----------------|
-| binarized_mnist | 50,000    |     0.11 (?)    |
+| binarized_mnist | 70,000    |     0.11 (?)    |
 | [cifar10](http://www.cs.toronto.edu/~kriz/cifar.html)         | 60,000    |     74.41       |
 | [cifar100](http://www.cs.toronto.edu/~kriz/cifar.html)        | 60,000    |  50.92 (coarse) / 43.87 (fine) |
 | [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set)            |    150    |     63.16       |
-| [mnist](http://yann.lecun.com/exdb/mnist/)           | 60,000    |     99.13       |
+| [mnist](http://yann.lecun.com/exdb/mnist/)           | 70,000    |     99.13       |
 | [svhn2](http://ufldl.stanford.edu/housenumbers/)       | >600,000  |  92.86 (train) / 96.60 (+extra) |
 
 Merge requests for any of these examples that are more accurate, run faster, and/or are written clearer are
