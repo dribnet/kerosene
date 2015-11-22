@@ -14,8 +14,8 @@ from keras.utils import np_utils
 
     http://yann.lecun.com/exdb/mnist/
 
-    This version can get to 99.13% test accuracy after 12 epochs.
-    15 seconds per epoch on a GeForce GTX 680 GPU.
+    This version can get to 99.16% test accuracy after 12 epochs.
+    10 seconds per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 128
@@ -29,25 +29,35 @@ nb_epoch = 12
 print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
 print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] == 1 else "s", *X_test.shape))
 
+# input image dimensions
+_, _, img_rows, img_cols = X_train.shape
+# number of convolutional filters to use
+nb_filters = 32
+# size of pooling area for max pooling
+nb_pool = 2
+# convolution kernel size
+nb_conv = 3
+
 # convert class vectors to binary class matrices
 Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
-model.add(Convolution2D(32, 1, 3, 3, border_mode='full'))
+model.add(Convolution2D(nb_filters, nb_conv, nb_conv,
+                        border_mode='full',
+                        input_shape=(1, img_rows, img_cols)))
 model.add(Activation('relu'))
-model.add(Convolution2D(32, 32, 3, 3))
+model.add(Convolution2D(nb_filters, nb_conv, nb_conv))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(poolsize=(2, 2)))
+model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(32*196, 128))
+model.add(Dense(128))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-
-model.add(Dense(128, nb_classes))
+model.add(Dense(nb_classes))
 model.add(Activation('softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adadelta')

@@ -89,7 +89,7 @@ Kerosene depends on the development version of [fuel](https://github.com/mila-ud
 The following commands installs the fuel dependency. Sometimes sudo is necessary.
 
 ```bash
-pip install git+git://github.com/mila-udem/fuel.git@64a43f9
+pip install git+git://github.com/mila-udem/fuel.git@v0.1.1
 ```
 
 After dependencies run the following:
@@ -98,7 +98,7 @@ After dependencies run the following:
 python setup.py install
 ```
 
-If you have keras, you should be able to run any of the examples in the examples folder.
+If you have keras, you should be able to run any of the examples in the examples folder with the most recent keras (0.2.0).
 
 ```bash
 pip install keras
@@ -113,12 +113,12 @@ dataset.
 
 | Dataset | # records | % Accuracy Score |
 |---------|-------------------|-----------------|
-| binarized_mnist | 70,000    |     0.11 (?)    |
-| [cifar10](http://www.cs.toronto.edu/~kriz/cifar.html)         | 60,000    |     74.41       |
-| [cifar100](http://www.cs.toronto.edu/~kriz/cifar.html)        | 60,000    |  50.92 (coarse) / 43.87 (fine) |
+| binarized_mnist | 70,000    |     0.0107 (loss)   |
+| [cifar10](http://www.cs.toronto.edu/~kriz/cifar.html)         | 60,000    |     74.61       |
+| [cifar100](http://www.cs.toronto.edu/~kriz/cifar.html)        | 60,000    |  53.97 (coarse) / 44.56 (fine) |
 | [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set)            |    150    |     63.16       |
-| [mnist](http://yann.lecun.com/exdb/mnist/)           | 70,000    |     99.13       |
-| [svhn2](http://ufldl.stanford.edu/housenumbers/)       | >600,000  |  92.86 (train) / 96.60 (+extra) |
+| [mnist](http://yann.lecun.com/exdb/mnist/)           | 70,000    |     99.16       |
+| [svhn2](http://ufldl.stanford.edu/housenumbers/)       | >600,000  |  92.30 (train) / 96.37 (+extra) |
 
 Merge requests for any of these examples that are more accurate, run faster, and/or are written clearer are
 definitely welcome.
@@ -128,8 +128,7 @@ It is also possible to use `fuel-download` and `fuel-convert` on datasets that a
 
 ## Issues
 
-This project is just getting started, so the API is subject to change, documentation is lacking, and options are not necessarily discoverable. Kerosene does not yet support fuel's ability to iterate over a dataset without loading it into memory. I'm not happy with the hdf5 file sizes. The dev fuel dependency is awkard,
-but that cannot be easily fixed until the next fuel release. The overall software design is also rough, but it functions well as proof of concept that can be refined if kerosene becomes useful to others.
+Documentation is lacking, and options are not necessarily discoverable. Kerosene does not yet support fuel's ability to iterate over a dataset without loading it into memory. I'm not happy with the hdf5 file sizes. Not yet in PyPI because fuel itself is not in PyPI. The overall software design can be refined as kerosene becomes useful to others.
 
 ## License
 

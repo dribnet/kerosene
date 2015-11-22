@@ -34,15 +34,15 @@ from keras.optimizers import SGD, Adadelta, Adagrad
     with data going to two different softmax classifiers. Instead
     here we run twice and use transfer learning from the first model.
 
-    This version can get to 50.92% test accuracy after 12 epochs.
-    The final_labels version then gets 43.87% test accuracy (with
+    This version can get to 53.97% test accuracy after 12 epochs.
+    The final_labels version then gets 44.56% test accuracy (with
     100 classses!) following on with another 12 epochs.
-    25 seconds per epoch on a GeForce GTX 680 GPU.
+    17 seconds per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 128
 # building model with too many classes inially for simpler transfer learning afterwards
-nb_classes = 101
+nb_classes = 100
 nb_epoch = 12
 
 (X_train, y_train), (X_test, y_test) = cifar100.load_data()
@@ -51,32 +51,35 @@ nb_epoch = 12
 print("{1} train samples, {2} channel{0}, {3}x{4}".format("" if X_train.shape[1] == 1 else "s", *X_train.shape))
 print("{1}  test samples, {2} channel{0}, {3}x{4}".format("" if X_test.shape[1] == 1 else "s", *X_test.shape))
 
+# input image dimensions
+_, img_channels, img_rows, img_cols = X_train.shape
+
 # convert class vectors to binary class matrices
 Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
-model.add(Convolution2D(32, 3, 3, 3, border_mode='full'))
+model.add(Convolution2D(32, 3, 3, border_mode='full',
+                        input_shape=(img_channels, img_rows, img_cols)))
 model.add(Activation('relu'))
-model.add(Convolution2D(32, 32, 3, 3))
+model.add(Convolution2D(32, 3, 3))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(poolsize=(2, 2)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
-model.add(Convolution2D(64, 32, 3, 3, border_mode='full'))
+model.add(Convolution2D(64, 3, 3, border_mode='full'))
 model.add(Activation('relu'))
-model.add(Convolution2D(64, 64, 3, 3))
+model.add(Convolution2D(64, 3, 3))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(poolsize=(2, 2)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(64*8*8, 512))
+model.add(Dense(512))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-
-model.add(Dense(512, nb_classes))
+model.add(Dense(nb_classes))
 model.add(Activation('softmax'))
 
 # let's train the model using SGD + momentum (how original).

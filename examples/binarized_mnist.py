@@ -31,12 +31,11 @@ from keras.layers import containers
     making it available for comparison to published results.
 
     Since I don't have labels, I'm just running it through the
-    autoencoder with reconstruction; not sure how to intpret the
-    score, but it doesn't seem to converge. Well at least it runs
-    fast. :-)
+    autoencoder with reconstruction; Seems to converge, but haven't
+    verified it's doing the right thing.
     
-    This version stars at 0.2415 loss and remains there for 12 epochs.
-    1 second per epoch on a GeForce GTX 680 GPU.
+    This version gets to 0.0107 loss after 6 epochs and remains
+    until epoch 12. 1 second per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 128
@@ -64,8 +63,12 @@ activation = 'linear'
 
 # build model
 model = Sequential()
-encoder = containers.Sequential([Dense(input_dim, hidden_dim, activation=activation), Dense(hidden_dim, final_dim, activation=activation)])
-decoder = containers.Sequential([Dense(final_dim, hidden_dim, activation=activation), Dense(hidden_dim, input_dim, activation=activation)])
+encoder = containers.Sequential([
+    Dense(hidden_dim, activation=activation, input_shape=(input_dim,)),
+    Dense(final_dim,  activation=activation)])
+decoder = containers.Sequential([
+    Dense(hidden_dim, activation=activation, input_shape=(final_dim,)),
+    Dense(input_dim, activation=activation)])
 model.add(AutoEncoder(encoder=encoder, decoder=decoder, output_reconstruction=True))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(X_train, X_train, batch_size=batch_size, nb_epoch=nb_epoch, show_accuracy=True, verbose=1, validation_data=(X_test, X_test))
