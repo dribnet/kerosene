@@ -28,8 +28,8 @@ from keras.optimizers import SGD, Adadelta, Adagrad
     Alex Krizhevsky, *Learning Multiple Layers of Features
        from Tiny Images*, technical report, 2009.
 
-    This version can get to 77.61% test accuracy after 12 epochs.
-    25 seconds per epoch on a GeForce GTX 680 GPU.
+    This version can get to 74.98% test accuracy after 12 epochs.
+    32 seconds per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 32
@@ -51,7 +51,7 @@ Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
-model.add(Convolution2D(32, 3, 3, border_mode='full',
+model.add(Convolution2D(32, 3, 3, border_mode='same',
                         input_shape=(img_channels, img_rows, img_cols)))
 model.add(Activation('relu'))
 model.add(Convolution2D(32, 3, 3))
@@ -59,7 +59,7 @@ model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
-model.add(Convolution2D(64, 3, 3, border_mode='full'))
+model.add(Convolution2D(64, 3, 3, border_mode='same'))
 model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, 3))
 model.add(Activation('relu'))

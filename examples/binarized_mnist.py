@@ -34,8 +34,9 @@ from keras.layers import containers
     autoencoder with reconstruction; Seems to converge, but haven't
     verified it's doing the right thing.
     
-    This version gets to 0.0107 loss after 6 epochs and remains
+    This version gets stuck at 0.2358 on the first epoch and remains
     until epoch 12. 1 second per epoch on a GeForce GTX 680 GPU.
+    (This is probably a bug that needs to be fixed).
 '''
 
 batch_size = 128

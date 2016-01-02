@@ -4,7 +4,7 @@ Provides verisioned datasets to Machine Learning projects in hdf5 format with a 
 
 ## Show me
 
-Without optional arguments, kerosene provides a minimal interface to get features and labels in a test / train split. Below are examples of using it with [keras](https://github.com/fchollet/keras).
+Without optional arguments, kerosene provides a minimal interface to get features and labels in a test / train split. Below are examples of using it with [keras](https://github.com/fchollet/keras), but it can work with any machine learning library.
 
 ```python
 # MNIST example
@@ -19,7 +19,7 @@ model.fit(X_train, Y_train, show_accuracy=True, validation_data=(X_test, Y_test)
 score = model.evaluate(X_test, Y_test, show_accuracy=True, verbose=0)
 ```
 
-However, kerosene datasets support one or more sources, such as secondary labels.
+Kerosene datasets support one or more sources, such as secondary labels.
 
 ```python
 # CIFAR100 example
@@ -84,21 +84,15 @@ access to the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) data
 
 ## Installation
 
-Kerosene depends on the development version of [fuel](https://github.com/mila-udem/fuel). The packaged examples require the official [keras](https://github.com/fchollet/keras/) to run. Kerosene is not yet available via `pip`, but plans are to do so after the next offical release of fuel.
-
-The following commands installs the fuel dependency. Sometimes sudo is necessary.
-
 ```bash
-pip install git+git://github.com/mila-udem/fuel.git@v0.1.1
+pip install kerosene
 ```
 
-After dependencies run the following:
+Kerosene depends on the [fuel](https://github.com/mila-udem/fuel) library, which will be installed automatically if needed.
 
-```
-python setup.py install
-```
+Sometimes sudo is necessary for the pip command.
 
-If you have keras, you should be able to run any of the examples in the examples folder with the most recent keras (0.2.0).
+If you have keras, you should be able to run any of the examples in the examples folder with the most recent version of keras (0.3.0).
 
 ```bash
 pip install keras
@@ -107,28 +101,31 @@ python ./examples/mnist.py
 
 ## What's included
 
-Currently the six datasets are wrappers around those provided by fuel - meant to be useful primarily to keras developers. Each has a corresponding
-keras based example in the examples directory which is meant to be a high performance representative use of that
-dataset.
+Currently the six datasets are wrappers around those provided by fuel. Each has a corresponding
+keras based example in the examples directory which is intended to be a high performance representative use of that dataset.
 
 | Dataset | # records | % Accuracy Score |
 |---------|-------------------|-----------------|
-| binarized_mnist | 70,000    |     0.0107 (loss)   |
-| [cifar10](http://www.cs.toronto.edu/~kriz/cifar.html)         | 60,000    |     74.61       |
-| [cifar100](http://www.cs.toronto.edu/~kriz/cifar.html)        | 60,000    |  53.97 (coarse) / 44.56 (fine) |
+| binarized_mnist | 70,000    |     0.2358 (loss)   |
+| [cifar10](http://www.cs.toronto.edu/~kriz/cifar.html)         | 60,000    |     74.98       |
+| [cifar100](http://www.cs.toronto.edu/~kriz/cifar.html)        | 60,000    |  53.14 (coarse) / 44.02 (fine) |
 | [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set)            |    150    |     63.16       |
-| [mnist](http://yann.lecun.com/exdb/mnist/)           | 70,000    |     99.16       |
-| [svhn2](http://ufldl.stanford.edu/housenumbers/)       | >600,000  |  92.30 (train) / 96.37 (+extra) |
+| [mnist](http://yann.lecun.com/exdb/mnist/)           | 70,000    |     99.10       |
+| [svhn2](http://ufldl.stanford.edu/housenumbers/)       | >600,000  |  93.05 (train) / 96.40 (+extra) |
 
-Merge requests for any of these examples that are more accurate, run faster, and/or are written clearer are
-definitely welcome.
+Merge requests for any of these examples that are more accurate, run faster, and/or are written clearer are definitely welcome.
 
-It is also possible to use `fuel-download` and `fuel-convert` on datasets that are not part of the fuel distribution, making them kerosene and fuel compatible. An example is [lfw_fuel](https://github.com/dribnet/lfw_fuel), which creates a fuel-compatible dataset which can be made available to both blocks and keras developers.
+It is also possible to use `fuel-download` and `fuel-convert` on datasets that are not part of the fuel distribution, making them kerosene and fuel compatible. An example is [lfw_fuel](https://github.com/dribnet/lfw_fuel), which creates a fuel-compatible dataset.
 
 
 ## Issues
 
-Documentation is lacking, and options are not necessarily discoverable. Kerosene does not yet support fuel's ability to iterate over a dataset without loading it into memory. I'm not happy with the hdf5 file sizes. Not yet in PyPI because fuel itself is not in PyPI. The overall software design can be refined as kerosene becomes useful to others.
+The next planned improvements are:
+
+ * support for compressed downloads (because the hdf5 files are large)
+ * interface for iterating over a dataset without loading it into memory
+
+Documentation is lacking, options are not easily discoverable, and the software design is rough. These areas can be improved if others find this library useful.
 
 ## License
 

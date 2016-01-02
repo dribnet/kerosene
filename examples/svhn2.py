@@ -17,16 +17,16 @@ from keras.optimizers import SGD, Adadelta, Adagrad
 
     http://ufldl.stanford.edu/housenumbers/
 
-    This version can get to 92.30% test accuracy after 12 epochs.
-    27 seconds per epoch on a GeForce GTX 680 GPU.
+    This version can get to 93.05% test accuracy after 12 epochs.
+    35 seconds per epoch on a GeForce GTX 680 GPU.
 
     Or you can try:
       USE_EXTRA=1 python svhn2.py
 
     to also train on the much larger set that includes "extra" data.
 
-    With this extra data, this gets to 96.37% test accuracy after 12 epochs.
-    205 seconds per epoch on a GeForce GTX 680 GPU.
+    With this extra data, this gets to 96.40% test accuracy after 12 epochs.
+    273 seconds per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 128
@@ -55,7 +55,7 @@ Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
-model.add(Convolution2D(32, 3, 3, border_mode='full',
+model.add(Convolution2D(32, 3, 3, border_mode='same',
                         input_shape=(img_channels, img_rows, img_cols)))
 model.add(Activation('relu'))
 model.add(Convolution2D(32, 3, 3))
@@ -63,7 +63,7 @@ model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
-model.add(Convolution2D(64, 3, 3, border_mode='full'))
+model.add(Convolution2D(64, 3, 3, border_mode='same'))
 model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, 3))
 model.add(Activation('relu'))

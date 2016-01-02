@@ -14,8 +14,8 @@ from keras.utils import np_utils
 
     http://yann.lecun.com/exdb/mnist/
 
-    This version can get to 99.16% test accuracy after 12 epochs.
-    10 seconds per epoch on a GeForce GTX 680 GPU.
+    This version can get to 99.10% test accuracy after 12 epochs.
+    8 seconds per epoch on a GeForce GTX 680 GPU.
 '''
 
 batch_size = 128
@@ -45,7 +45,7 @@ Y_test = np_utils.to_categorical(y_test, nb_classes)
 model = Sequential()
 
 model.add(Convolution2D(nb_filters, nb_conv, nb_conv,
-                        border_mode='full',
+                        border_mode='valid',
                         input_shape=(1, img_rows, img_cols)))
 model.add(Activation('relu'))
 model.add(Convolution2D(nb_filters, nb_conv, nb_conv))

@@ -10,11 +10,11 @@ from keras.utils import np_utils
 
 '''
     Train something simple on the classic iris dataset.
-[]
+
     This version can get to 63.16% test accuracy after 8 epochs,
-    and it remains there for future epochs, though the test loss
+    and it remains there for future epochs, though the train loss
     continues to fall for all 12 epochs.
-    0 seconds per epoch, even on your CPU.
+    <1 second per epoch, even on your CPU.
 '''
 
 batch_size = 1
