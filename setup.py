@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(name='Kerosene',
       version='0.2.0',
-      description='Simple wrapper for fuel datasets',
+      description='Wrapper and downloader for fuel datasets',
       author='Tom White',
       author_email='tom@sixdozen.com',
       url='https://github.com/dribnet/kerosene',
