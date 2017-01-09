@@ -9,6 +9,9 @@ from keras.layers.core import Dense, AutoEncoder
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
 from keras.layers import containers
+import keras.backend as K
+
+K.set_image_dim_ordering('th')
 
 '''
     Iain Murray's conversion of mnist to binary format. The
@@ -71,8 +74,8 @@ decoder = containers.Sequential([
     Dense(hidden_dim, activation=activation, input_shape=(final_dim,)),
     Dense(input_dim, activation=activation)])
 model.add(AutoEncoder(encoder=encoder, decoder=decoder, output_reconstruction=True))
-model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(X_train, X_train, batch_size=batch_size, nb_epoch=nb_epoch, show_accuracy=True, verbose=1, validation_data=(X_test, X_test))
+model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+model.fit(X_train, X_train, batch_size=batch_size, nb_epoch=nb_epoch, verbose=1, validation_data=(X_test, X_test))
 
 # not sure if this is a valid way to evaluate the autoencoder...
 score = model.evaluate(X_test, X_test, show_accuracy=True, verbose=0)
