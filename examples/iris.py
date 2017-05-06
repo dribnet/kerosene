@@ -7,6 +7,9 @@ from kerosene.datasets import iris
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation
 from keras.utils import np_utils
+import keras.backend as K
+
+K.set_image_dim_ordering('th')
 
 '''
     Train something simple on the classic iris dataset.
@@ -34,6 +37,6 @@ Y_all = np_utils.to_categorical(y_all, nb_classes)
 model = Sequential()
 model.add(Dense(input_dim=input_dim, output_dim=nb_classes, init='glorot_uniform'))
 model.add(Activation('softmax'))
-model.compile(loss='mean_squared_error', optimizer='rmsprop')                    
+model.compile(loss='mean_squared_error', optimizer='rmsprop', metrics=['accuracy'])
 
-model.fit(X_all, Y_all, batch_size=batch_size, nb_epoch=nb_epoch, show_accuracy=True, validation_split=0.25, verbose=1)
+model.fit(X_all, Y_all, batch_size=batch_size, nb_epoch=nb_epoch, validation_split=0.25, verbose=1)

@@ -40,7 +40,7 @@ def fuel_data_to_list(fuel_data, shuffle):
     else:
         scheme = SequentialScheme(fuel_data.num_examples, fuel_data.num_examples)
     fuel_data_stream = DataStream.default_stream(fuel_data, iteration_scheme=scheme)
-    return fuel_data_stream.get_epoch_iterator().next()
+    return next(fuel_data_stream.get_epoch_iterator())
 
 def fuel_datasets_unpacked(fuel_datasets, shuffle=False):
     return map(lambda x: fuel_data_to_list(x, shuffle=shuffle), fuel_datasets)
