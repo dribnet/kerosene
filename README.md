@@ -1,3 +1,5 @@
+### Note: This library depends on Fuel - which is no longer being developed or maintained. So this library is also orphaned and is no longer under active development. 
+
 # Kerosene: Clean Burning Fuel
 
 Provides verisioned datasets to Machine Learning projects in hdf5 format with a dead-simple interface.
